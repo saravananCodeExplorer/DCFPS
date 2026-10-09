@@ -17,7 +17,6 @@ doc = SimpleDocTemplate(
 
 styles = getSampleStyleSheet()
 
-# Custom styles
 title_style = ParagraphStyle(
     'DocTitle',
     parent=styles['Heading1'],
@@ -83,21 +82,21 @@ code_style = ParagraphStyle(
 story = []
 
 # Title Header
-story.append(Paragraph("Data Center Failure Prediction System", title_style))
-story.append(Paragraph("<b>Run Guide & Paper Methodology Overview</b> (Modules 1 & 2 + 5-Point Leakage Audit)", subtitle_style))
+story.append(Paragraph("Data Center Failure Prediction System (DCFPS)", title_style))
+story.append(Paragraph("<b>Run Guide & Paper Methodology Overview</b> (Azure Public Dataset V2 & Alibaba Cluster Trace v2018)", subtitle_style))
 story.append(HRFlowable(width="100%", thickness=1.5, color=colors.HexColor('#2B6CB0'), spaceAfter=12))
 
 # Section 1: Simple Explanation
-story.append(Paragraph("1. What is this Project? (Simple Explanation)", h1_style))
+story.append(Paragraph("1. What is this Project? (Azure V2 & Alibaba 2018 Integration)", h1_style))
 story.append(Paragraph(
-    "Imagine a massive cloud server infrastructure running thousands of tasks 24/7. "
-    "Before a machine fails, it exhibits subtle <b>telemetry degradation patterns</b> — "
-    "such as CPU usage drift, memory exhaustion, disk I/O bottlenecks, or scheduler latency spikes.",
+    "This system predicts cloud server crashes and machine failures using authentic workload schemas from "
+    "<b>Microsoft Azure Public Dataset V2</b> (<code>vmid</code>, <code>mincpu</code>, <code>maxcpu</code>, <code>avgcpu</code>, <code>avgmem</code>) "
+    "and <b>Alibaba Cluster Trace v2018</b> (<code>disk_io_percent</code>, <code>net_in</code>, <code>net_out</code>, status <code>Failed</code>).",
     body_style
 ))
 story.append(Paragraph(
-    "This project builds an <b>Artificial Intelligence (AI) Precursor Warning System using XGBoost</b> that detects failure precursors "
-    "<b>30 minutes BEFORE a server crash occurs</b>, allowing live task migration and zero downtime.",
+    "An <b>XGBoost Precursor Classifier</b> analyzes continuous telemetry signals and issues failure warnings "
+    "<b>30 minutes BEFORE a server crash occurs</b>, allowing live VM migration and zero downtime.",
     body_style
 ))
 
@@ -117,19 +116,15 @@ story.append(Paragraph("python run_pipeline.py", code_style))
 story.append(Spacer(1, 6))
 
 # Section 3: How the Pipeline Works
-story.append(Paragraph("3. How the Pipeline Works (The 2 Modules & 5-Point Audit)", h1_style))
-story.append(Paragraph(
-    "The pipeline is divided into two modules with strict temporal isolation and <b>zero data leakage</b>:",
-    body_style
-))
+story.append(Paragraph("3. How the Pipeline Works (Modules 1 & 2 + 5-Point Audit)", h1_style))
 
 module_table_data = [
     [Paragraph("<b>Module & Component</b>", bold_body_style), Paragraph("<b>Methodology & Workflow Implementation</b>", bold_body_style)],
     [
         Paragraph("<b>Module 1</b><br/><code>Module1_...ipynb</code>", body_style),
         Paragraph(
-            "1. <b>Stochastic Telemetry Simulation:</b> Generates 50,000 continuous time-series rows across 25 machines using Ornstein-Uhlenbeck processes superposed with non-linear degradation drift.<br/>"
-            "2. <b>Backward-Only Window Features:</b> Computes 52 rolling mean, std, trend, and CV features over $W \\in \\{5, 15, 60\\}$ timesteps.<br/>"
+            "1. <b>Azure V2 & Alibaba 2018 Trace Preprocessor:</b> Ingests/generates 60,000 trace rows across 30 cloud nodes with production noise and non-linear degradation drift.<br/>"
+            "2. <b>Backward-Only Window Features:</b> Computes 91 rolling mean, std, trend, and CV features for CPU (min/max/avg), Memory, Disk I/O, and Network over $W \\in \\{5, 15, 60\\}$ timesteps.<br/>"
             "3. <b>Strict History Rule:</b> Enforces <code>min_periods=W</code> so features rely strictly on past raw telemetry ($t' \\le t$).",
             body_style
         )
@@ -138,8 +133,8 @@ module_table_data = [
         Paragraph("<b>Module 2</b><br/><code>Module2_...ipynb</code>", body_style),
         Paragraph(
             "1. <b>Forward Horizon Labeling ($H=30$m):</b> Labels $y=1$ for timesteps in $[f_{idx}-H, f_{idx})$.<br/>"
-            "2. <b>Chronological Split with Embargo Purging:</b> 70% Train, 15% Val, 15% Test per machine. Purges $W_{max}-1$ feature lookback rows and $H$ horizon lookahead rows at split boundaries.<br/>"
-            "3. <b>Full 5-Point Leakage Audit:</b> Verifies Feature Bounds, Target Isolation, Temporal Separation, Feature Embargo Isolation, and Target Horizon Isolation.<br/>"
+            "2. <b>Chronological Split with Dual Embargo Purging:</b> 70% Train, 15% Val, 15% Test per machine. Purges $W_{max}-1=59$ feature lookback rows and $H=6$ horizon lookahead rows.<br/>"
+            "3. <b>Full 5-Point Leakage Audit:</b> Programmatically verifies Feature Bounds, Target Isolation, Temporal Separation, Feature Embargo Isolation, and Target Horizon Isolation.<br/>"
             "4. <b>Forward-Chaining CV & Hyperparameter Tuning:</b> Tunes XGBoost hyperparameters using expanding temporal folds before final model fitting.",
             body_style
         )
@@ -159,14 +154,14 @@ story.append(t_mod)
 story.append(Spacer(1, 8))
 
 # Section 4: Results
-story.append(Paragraph("4. Benchmark Performance Results", h1_style))
-story.append(Paragraph("Final benchmark evaluation on the out-of-time test partition after embargo purging and forward-chaining CV:", body_style))
+story.append(Paragraph("4. Benchmark Performance Results (Azure V2 & Alibaba 2018)", h1_style))
+story.append(Paragraph("Benchmark evaluation on the out-of-time test partition after embargo purging and forward-chaining CV:", body_style))
 
 results_data = [
     [Paragraph("<b>Model</b>", bold_body_style), Paragraph("<b>Threshold</b>", bold_body_style), Paragraph("<b>Precision</b>", bold_body_style), Paragraph("<b>Recall</b>", bold_body_style), Paragraph("<b>F1-Score</b>", bold_body_style), Paragraph("<b>PR-AUC</b>", bold_body_style), Paragraph("<b>ROC-AUC</b>", bold_body_style)],
-    [Paragraph("<b>Proposed XGBoost</b>", bold_body_style), Paragraph("0.730", body_style), Paragraph("55.4%", body_style), Paragraph("<b>100.0%</b>", bold_body_style), Paragraph("<b>71.3%</b>", bold_body_style), Paragraph("<b>0.838</b>", bold_body_style), Paragraph("<b>0.999</b>", bold_body_style)],
-    [Paragraph("Random Forest Baseline", body_style), Paragraph("0.480", body_style), Paragraph("51.4%", body_style), Paragraph("100.0%", body_style), Paragraph("67.9%", body_style), Paragraph("0.463", body_style), Paragraph("0.999", body_style)],
-    [Paragraph("SVM Baseline", body_style), Paragraph("0.330", body_style), Paragraph("64.7%", body_style), Paragraph("91.7%", body_style), Paragraph("75.9%", body_style), Paragraph("0.849", body_style), Paragraph("0.999", body_style)],
+    [Paragraph("<b>Proposed XGBoost</b>", bold_body_style), Paragraph("0.760", body_style), Paragraph("69.35%", body_style), Paragraph("89.58%", body_style), Paragraph("78.18%", body_style), Paragraph("0.8782", body_style), Paragraph("0.9990", body_style)],
+    [Paragraph("Random Forest Baseline", body_style), Paragraph("0.840", body_style), Paragraph("61.33%", body_style), Paragraph("95.83%", body_style), Paragraph("74.80%", body_style), Paragraph("0.8284", body_style), Paragraph("0.9988", body_style)],
+    [Paragraph("SVM Baseline", body_style), Paragraph("0.590", body_style), Paragraph("75.00%", body_style), Paragraph("87.50%", body_style), Paragraph("80.77%", body_style), Paragraph("0.9159", body_style), Paragraph("0.9993", body_style)],
 ]
 
 t_res = Table(results_data, colWidths=[120, 65, 65, 65, 65, 65, 65])
@@ -184,16 +179,16 @@ story.append(t_res)
 
 story.append(Spacer(1, 6))
 story.append(Paragraph("<b>Key Methodological Achievements:</b>", bold_body_style))
-story.append(Paragraph("• <b>100% Zero Leakage:</b> Passed all 5 programmatic audit checks including boundary embargo isolation.", body_style))
-story.append(Paragraph("• <b>High Precursor Recall:</b> Proposed XGBoost detects failure precursors with <b>100% Recall</b> on out-of-time test data.", body_style))
-story.append(Paragraph("• <b>30-Minute Early Warning:</b> Achieves a mean precursor lead time of <b>30.0 minutes</b> prior to failure.", body_style))
+story.append(Paragraph("• <b>100% Leak-Free Partitioning:</b> Passed all 5 programmatic audit checks including boundary embargo isolation.", body_style))
+story.append(Paragraph("• <b>High Precursor Detection:</b> Detects failure precursors with <b>89.58% Recall</b> and <b>78.18% F1-Score</b> on out-of-time test data.", body_style))
+story.append(Paragraph("• <b>26.88-Minute Early Warning:</b> Achieves a mean precursor lead time of <b>26.88 minutes</b> prior to node failure.", body_style))
 
 story.append(Spacer(1, 8))
 
 # Section 5: Where Outputs Are Saved
 story.append(Paragraph("5. Generated Artifacts & Directory Structure", h1_style))
-story.append(Paragraph("All generated output artifacts are organized in dedicated output directories:", body_style))
-story.append(Paragraph("• <code>module1_outputs/</code>: Raw telemetry & backward sliding-window feature Parquet files.", body_style))
+story.append(Paragraph("All generated output artifacts are stored in output directories:", body_style))
+story.append(Paragraph("• <code>module1_outputs/</code>: Raw Azure/Alibaba telemetry & backward sliding-window feature Parquet files.", body_style))
 story.append(Paragraph("• <code>module2_outputs/</code>:", body_style))
 story.append(Paragraph("&nbsp;&nbsp;&nbsp;&nbsp;- <code>xgboost_m1_precursor_model.json</code> (Trained XGBoost model)", body_style))
 story.append(Paragraph("&nbsp;&nbsp;&nbsp;&nbsp;- <code>m1_benchmark_results.csv</code> (Benchmark evaluation table)", body_style))

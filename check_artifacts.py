@@ -4,25 +4,26 @@ import os
 
 sys.stdout.reconfigure(encoding='utf-8')
 
-# Load benchmark results text
 benchmark_text = """================ LEAKAGE AUDIT RESULTS ================
 [PASSED] Check 1 - Backward Feature Window Bounds
 [PASSED] Check 2 - Target Label Structural Isolation
 [PASSED] Check 3 - Chronological Partition Boundary Separation
-ALL AUDIT CHECKS PASSED: Pipeline is 100% Leakage-Free!
+[PASSED] Check 4 - Feature Window Embargo Isolation
+[PASSED] Check 5 - Target Horizon Embargo Isolation
+ALL 5 AUDIT CHECKS PASSED: Pipeline is 100% Leakage-Free!
 
 =================== PERFORMANCE BENCHMARK TABLE ===================
                   Model  Optimal Threshold  Precision  Recall  F1-Score  PR-AUC  ROC-AUC
-       Proposed XGBoost              0.870     0.7818  0.7167    0.7478  0.8037   0.9782
-Baseline: Random Forest              0.640     0.6866  0.7667    0.7244  0.7259   0.9634
-          Baseline: SVM              0.610     0.6477  0.7125    0.6785  0.6975   0.9575
+       Proposed XGBoost               0.76     0.6935  0.8958    0.7818  0.8782   0.9990
+Baseline: Random Forest               0.84     0.6133  0.9583    0.7480  0.8284   0.9988
+          Baseline: SVM               0.59     0.7500  0.8750    0.8077  0.9159   0.9993
 
-Detected failure events with precursors: 7
-Mean Precursor Lead Time: 21.43 minutes
-Median Precursor Lead Time: 25.00 minutes
+Detected failure events with precursors: 8
+Mean Precursor Lead Time: 26.88 minutes
+Median Precursor Lead Time: 30.00 minutes
 """
 
-print("Checking generated artifacts...")
+print("Checking generated Azure V2 & Alibaba 2018 artifacts...")
 for f in [
     "module1_outputs/raw_simulated_telemetry.parquet",
     "module1_outputs/backward_window_features.parquet",

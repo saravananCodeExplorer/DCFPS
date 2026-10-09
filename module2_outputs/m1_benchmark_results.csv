@@ -1,4 +1,4 @@
 Model,Optimal Threshold,Precision,Recall,F1-Score,PR-AUC,ROC-AUC
-Proposed XGBoost,0.73,0.5538,1.0,0.7129,0.8383,0.9989
-Baseline: Random Forest,0.48,0.5143,1.0,0.6792,0.4634,0.9988
-Baseline: SVM,0.33,0.6471,0.9167,0.7586,0.8485,0.9989
+Proposed XGBoost,0.76,0.6935,0.8958,0.7818,0.8782,0.999
+Baseline: Random Forest,0.84,0.6133,0.9583,0.748,0.8284,0.9988
+Baseline: SVM,0.59,0.75,0.875,0.8077,0.9159,0.9993
